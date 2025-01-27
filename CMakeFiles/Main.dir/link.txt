@@ -1,0 +1,1 @@
+/usr/bin/c++ -fsanitize=address -g CMakeFiles/Main.dir/src/main.cpp.o -o Main  -lMathFunctions include/libRigidBody.a include/libForceGenerator.a include/libCore.a -lraylib

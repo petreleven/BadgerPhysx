@@ -1,0 +1,5 @@
+.cache
+.env
+compile_command.json
+build
+badger.sublime-project

@@ -1,0 +1,60 @@
+[
+{
+  "directory": "/home/peter/Desktop/tests/badger/build",
+  "command": "/usr/bin/c++ -I/home/peter/Desktop/tests/badger/build -I/home/peter/Desktop/tests/badger -I/home/peter/Desktop/tests/badger/include -g -fsanitize=address -std=gnu++20 -o CMakeFiles/Main.dir/src/main.cpp.o -c /home/peter/Desktop/tests/badger/src/main.cpp",
+  "file": "/home/peter/Desktop/tests/badger/src/main.cpp",
+  "output": "CMakeFiles/Main.dir/src/main.cpp.o"
+},
+
+{
+  "directory": "/home/peter/Desktop/tests/badger/build/include",
+  "command": "/usr/bin/c++ -g -fsanitize=address -std=gnu++20 -o CMakeFiles/Core.dir/Core.cpp.o -c /home/peter/Desktop/tests/badger/include/Core.cpp",
+  "file": "/home/peter/Desktop/tests/badger/include/Core.cpp",
+  "output": "include/CMakeFiles/Core.dir/Core.cpp.o"
+},
+
+{
+  "directory": "/home/peter/Desktop/tests/badger/build/include",
+  "command": "/usr/bin/c++ -g -fsanitize=address -std=gnu++20 -o CMakeFiles/ForceGenerator.dir/ForceGenerator.cpp.o -c /home/peter/Desktop/tests/badger/include/ForceGenerator.cpp",
+  "file": "/home/peter/Desktop/tests/badger/include/ForceGenerator.cpp",
+  "output": "include/CMakeFiles/ForceGenerator.dir/ForceGenerator.cpp.o"
+},
+
+{
+  "directory": "/home/peter/Desktop/tests/badger/build/include",
+  "command": "/usr/bin/c++ -g -fsanitize=address -std=gnu++20 -o CMakeFiles/RigidBody.dir/RigidBody.cpp.o -c /home/peter/Desktop/tests/badger/include/RigidBody.cpp",
+  "file": "/home/peter/Desktop/tests/badger/include/RigidBody.cpp",
+  "output": "include/CMakeFiles/RigidBody.dir/RigidBody.cpp.o"
+},
+
+{
+  "directory": "/home/peter/Desktop/tests/badger/build/include",
+  "command": "/usr/bin/c++ -g -fsanitize=address -std=gnu++20 -o CMakeFiles/LocusMathFunctions.dir/LocusMathFunctions.cpp.o -c /home/peter/Desktop/tests/badger/include/LocusMathFunctions.cpp",
+  "file": "/home/peter/Desktop/tests/badger/include/LocusMathFunctions.cpp",
+  "output": "include/CMakeFiles/LocusMathFunctions.dir/LocusMathFunctions.cpp.o"
+},
+
+{
+  "directory": "/home/peter/Desktop/tests/badger/build",
+  "command": "/usr/bin/c++ -I/home/peter/Desktop/tests/badger/build -I/home/peter/Desktop/tests/badger -I/home/peter/Desktop/tests/badger/include -g -fsanitize=address -std=gnu++20 -c /home/peter/Desktop/tests/badger/include/Core.h",
+  "file": "/home/peter/Desktop/tests/badger/include/Core.h"
+},
+
+{
+  "directory": "/home/peter/Desktop/tests/badger/build/include",
+  "command": "/usr/bin/c++ -g -fsanitize=address -std=gnu++20 -c /home/peter/Desktop/tests/badger/include/ForceGenerator.h",
+  "file": "/home/peter/Desktop/tests/badger/include/ForceGenerator.h"
+},
+
+{
+  "directory": "/home/peter/Desktop/tests/badger/build/include",
+  "command": "/usr/bin/c++ -g -fsanitize=address -std=gnu++20 -c /home/peter/Desktop/tests/badger/include/LocusMathFunctions.h",
+  "file": "/home/peter/Desktop/tests/badger/include/LocusMathFunctions.h"
+},
+
+{
+  "directory": "/home/peter/Desktop/tests/badger/build/include",
+  "command": "/usr/bin/c++ -g -fsanitize=address -std=gnu++20 -c /home/peter/Desktop/tests/badger/include/RigidBody.h",
+  "file": "/home/peter/Desktop/tests/badger/include/RigidBody.h"
+}
+]

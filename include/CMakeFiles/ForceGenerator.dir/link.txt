@@ -1,0 +1,2 @@
+/usr/bin/ar qc libForceGenerator.a CMakeFiles/ForceGenerator.dir/ForceGenerator.cpp.o
+/usr/bin/ranlib libForceGenerator.a

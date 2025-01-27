@@ -1,0 +1,623 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"bu",
+				"build"
+			],
+			[
+				"RE",
+				"return"
+			],
+			[
+				"b",
+				"build"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/home/peter/Desktop/tests/badger/untitled.sublime-project",
+			"settings":
+			{
+				"buffer_size": 229,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			},
+			"undo_stack":
+			[
+			]
+		},
+		{
+			"file": "main.sublime-project",
+			"settings":
+			{
+				"buffer_size": 73,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			},
+			"undo_stack":
+			[
+				[
+					3,
+					3,
+					"left_delete",
+					null,
+					"AwAAAEAAAAAAAAAAQAAAAAAAAAABAAAAcj8AAAAAAAAAPwAAAAAAAAABAAAAZT4AAAAAAAAAPgAAAAAAAAABAAAAZw",
+					"AQAAAAAAAAABAAAAQQAAAAAAAABBAAAAAAAAAAAAAAAAAPC/"
+				]
+			]
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/C++/C++ Single File.sublime-build",
+					""
+				],
+				[
+					"Packages/C++/C++ Single File.sublime-build",
+					"Run"
+				],
+				[
+					"Packages/Makefile/Make.sublime-build",
+					""
+				],
+				[
+					"Packages/Makefile/Make.sublime-build",
+					"Clean"
+				],
+				[
+					"Packages/C++11/C++11.sublime-build",
+					""
+				],
+				[
+					"Packages/C++11/C++11.sublime-build",
+					"Run"
+				],
+				[
+					"Packages/User/cmake.sublime-build",
+					""
+				],
+				[
+					"Packages/User/cmake.sublime-build",
+					"alean"
+				]
+			],
+			[
+				"Packages/User/cmake.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/C++/C++ Single File.sublime-build",
+					""
+				],
+				[
+					"Packages/C++/C++ Single File.sublime-build",
+					"Run"
+				],
+				[
+					"Packages/User/cmake.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/User/cmake.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/C++/C++ Single File.sublime-build",
+					""
+				],
+				[
+					"Packages/C++/C++ Single File.sublime-build",
+					"Run"
+				],
+				[
+					"Packages/User/cmake.sublime-build",
+					""
+				],
+				[
+					"Packages/User/cmake.sublime-build",
+					"Clean"
+				]
+			],
+			[
+				"Packages/User/cmake.sublime-build",
+				"Clean"
+			]
+		],
+		[
+			[
+				[
+					"Packages/C++/C++ Single File.sublime-build",
+					""
+				],
+				[
+					"Packages/C++/C++ Single File.sublime-build",
+					"Run"
+				],
+				[
+					"Packages/User/cmake.sublime-build",
+					""
+				],
+				[
+					"Packages/User/cmake.sublime-build",
+					"alean"
+				]
+			],
+			[
+				"Packages/User/cmake.sublime-build",
+				"alean"
+			]
+		],
+		[
+			[
+				[
+					"Packages/Makefile/Make.sublime-build",
+					""
+				],
+				[
+					"Packages/Makefile/Make.sublime-build",
+					"Clean"
+				],
+				[
+					"Packages/ShellScript/ShellScript.sublime-build",
+					""
+				],
+				[
+					"Packages/User/cmake.sublime-build",
+					""
+				],
+				[
+					"Packages/User/cmake.sublime-build",
+					"alean"
+				],
+				[
+					"Packages/User/cmake_shell.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/User/cmake_shell.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/Makefile/Make.sublime-build",
+					""
+				],
+				[
+					"Packages/Makefile/Make.sublime-build",
+					"Clean"
+				],
+				[
+					"Packages/User/cmake.sublime-build",
+					""
+				],
+				[
+					"Packages/User/cmake.sublime-build",
+					"alean"
+				],
+				[
+					"Packages/User/cmake_shell.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/User/cmake_shell.sublime-build",
+				""
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"de",
+				"Debugger: Open"
+			],
+			[
+				"d",
+				"Debugger: Open"
+			],
+			[
+				"deb",
+				"Debugger: Open"
+			],
+			[
+				"debu",
+				"Debugger: Open"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"packa",
+				"Package Control: Install Package"
+			],
+			[
+				"package",
+				"Package Control: Remove Package"
+			],
+			[
+				"gdb",
+				"SublimeGDB: Start Debugging"
+			],
+			[
+				"sublimegdb:",
+				"SublimeGDB: Start Debugging"
+			],
+			[
+				"ONSTA",
+				"Package Control: Install Package"
+			],
+			[
+				"QU",
+				"Debugger: Quit"
+			],
+			[
+				"D",
+				"Debugger: Open"
+			],
+			[
+				"DEB",
+				"Debugger: Open"
+			],
+			[
+				"DE",
+				"Debugger: Open"
+			],
+			[
+				"INSTAL",
+				"Package Control: Install Package"
+			],
+			[
+				"pre",
+				"Preferences: Settings"
+			],
+			[
+				"terminus",
+				"Terminus: Open Default Shell in Panel"
+			],
+			[
+				"theme",
+				"Terminus Utilities: Select Theme"
+			],
+			[
+				"color sche",
+				"UI: Select Color Scheme"
+			],
+			[
+				"brows",
+				"Preferences: Browse Packages"
+			],
+			[
+				"them",
+				"UI: Select Theme"
+			],
+			[
+				"setti",
+				"Preferences: Settings"
+			],
+			[
+				"prefere",
+				"Preferences: Settings"
+			],
+			[
+				"term",
+				"Terminus: Open Default Shell in Panel"
+			],
+			[
+				"ke",
+				"Preferences: Key Bindings"
+			],
+			[
+				"pa",
+				"Package Control: Install Package"
+			],
+			[
+				"bash",
+				"Set Syntax: Bash"
+			],
+			[
+				"package contr",
+				"Package Control: Remove Package"
+			],
+			[
+				"pac",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: l",
+				"Package Control: Install Package"
+			],
+			[
+				"package co",
+				"Install Package Control"
+			],
+			[
+				"Package C",
+				"Preferences: Browse Packages"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 361.0,
+		"history":
+		[
+			"ls"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/home/peter/Desktop/tests/bad"
+	],
+	"file_history":
+	[
+		"/home/peter/Desktop/tests/badger/src/main2.cpp",
+		"/home/peter/Desktop/tests/badger/include/Core.h",
+		"/home/peter/Desktop/tests/badger/untitled.sublime-project",
+		"/home/peter/Desktop/tests/badger/include/ForceGenerator.cpp",
+		"/home/peter/Desktop/tests/badger/build.sh",
+		"/home/peter/Desktop/tests/badger/include/CMakeLists.txt",
+		"/home/peter/Desktop/tests/badger/include/RigidBody.cpp",
+		"/home/peter/Desktop/tests/badger/CMakeLists.txt",
+		"/home/peter/Desktop/tests/badger/Makefile",
+		"/home/peter/Desktop/tests/badger/compile_commands.json",
+		"/home/peter/Desktop/tests/badger/cmake_install.cmake",
+		"/home/peter/.config/sublime-text/Packages/User/cmake_shell.sublime-build",
+		"/home/peter/Desktop/tests/badger/build2.sh",
+		"/home/peter/.config/sublime-text/Packages/User/cmake.sublime-build",
+		"/home/peter/Desktop/tests/datadriven/main2.cpp",
+		"/home/peter/.config/sublime-text/Packages/Terminus/Default.sublime-keymap",
+		"/home/peter/.config/sublime-text/Packages/User/Default (Linux).sublime-keymap",
+		"/home/peter/Desktop/tests/datadriven/main.cpp",
+		"/home/peter/.config/sublime-text/Packages/SublimeGDB/SublimeGDB.sublime-settings",
+		"/home/peter/Desktop/tests/datadriven/untitled.sublime-project",
+		"/home/peter/Desktop/tests/datadriven/build/CMakeFiles/CMakeConfigureLog.yaml"
+	],
+	"find":
+	{
+		"height": 37.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"scrollbar_highlights": true,
+		"show_context": true,
+		"use_buffer2": true,
+		"use_gitignore": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/home/peter/Desktop/tests/badger/untitled.sublime-project",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 229,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								43,
+								43
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JSON/JSON.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 128.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"stack_multiselect": false,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "main.sublime-project",
+					"selected": true,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 73,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								62,
+								62
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JSON/JSON.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"stack_multiselect": false,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 37.0
+	},
+	"input":
+	{
+		"height": 49.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.Debugger":
+	{
+		"height": 378.0
+	},
+	"output.Debugger Console":
+	{
+		"height": 149.0
+	},
+	"output.Debugger Terminal":
+	{
+		"height": 378.0
+	},
+	"output.Debugger Terminal(1)":
+	{
+		"height": 378.0
+	},
+	"output.Terminus":
+	{
+		"height": 176.0
+	},
+	"output.exec":
+	{
+		"height": 339.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "Packages/User/cmake_shell.sublime-build",
+	"project": "main.sublime-project",
+	"replace":
+	{
+		"height": 70.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 304.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 656.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 349.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
