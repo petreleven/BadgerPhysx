@@ -7,7 +7,7 @@
 #include <raylib.h>
 namespace badger {
 typedef float real;
-real EPSILON = 1e-6f;
+
 class Vector3 {
 public:
   real x;
@@ -94,7 +94,7 @@ public:
   */
   void normalize() {
     real mag = sqrtf(r * r + i * i + j * j + k * k);
-    if (mag < EPSILON) {
+    if (mag < 1e-6) {
       r = 1;
       return;
     }

@@ -1,7 +1,7 @@
 #include "RigidBody.h"
 #include "World.h"
 #include "Core.h"
-#include "Forcegenerator.h"
+#include "ForceGenerator.h"
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -22,7 +22,6 @@ int main() {
   real depth = 50;
   badger::World physixWorld;
   RigidBody b;
-  b.inverseMass
 
   float ix = (1.0f / 12.0f) * mass * (heigt * height + depth * depth);
   float iy = (1.0f / 12.0f) * mass * (width * width + depth * depth);

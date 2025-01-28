@@ -1,10 +1,7 @@
 #include "ForceGenerator.h"
-#include "Core.h"
-#include "LocusMathFunctions.h"
-#include <cmath>
 
 using bMath::BMathFunctions;
-
+using namespace badger;
 void GravityForceGenerator::applyForce(RigidBody *rigidBody, real dt) const {
   if (rigidBody->hasInfiniteMass()) {
     return;

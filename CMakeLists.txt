@@ -9,7 +9,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=address ")
 set(CMAKE_LINKER_FLAGS_DEBUG "${CMAKE_LINKER_FLAGS_DEBUG} -fsanitize=address")
 
 
-add_executable(Main src/main.cpp)
+add_executable(Main src/test.cpp)
 add_subdirectory(include)
 
 target_include_directories(Main PUBLIC
@@ -22,6 +22,7 @@ target_link_libraries(Main PUBLIC
     RigidBody 
     ForceGenerator 
     Core 
+    World
     raylib
 )
 

@@ -1,11 +1,14 @@
+#pragma once
 #include "Core.h"
 #include "LocusMathFunctions.h"
 #include "RigidBody.h"
+#include <cmath>
 
-using badger::real;
+namespace badger {
 using bBody::RigidBody;
 
 class ForceGenerator {
+
 public:
   virtual void applyForce(RigidBody *rigidBody, real dt) const = 0;
 };
@@ -46,3 +49,4 @@ public:
   */
   virtual void applyForce(RigidBody *body, const real &dt) const;
 };
+} // namespace badger

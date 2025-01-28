@@ -1,9 +1,11 @@
 #include "RigidBody.h"
-#include "Core.h"
-#include <cstdint>
+#include "LocusMathFunctions.h"
+
+
+
 namespace bBody {
-using badger::Vector3;
 using badger::real;
+using badger::Vector3;
 
 void RigidBody::integrate(real duration) {
   // linear_acceleration=f * invMass
@@ -137,7 +139,7 @@ void RigidBody::addForceAtPoint(const Vector3 &force, const Vector3 &point) {
   // t = pt * f
   Vector3 pt = point;
   pt -= position;
-  torqueAccum += BMathFunctions::CrossProduct(pt, force);
+  torqueAccum += bMath::BMathFunctions::CrossProduct(pt, force);
   forceAccum += force;
 }
 
@@ -156,4 +158,4 @@ Vector3 RigidBody::getPointLocal(const Vector3 &worldpos) const {
   return transformationMatrix.worldToLocal(worldpos, transformationMatrix);
 }
 
-} // namespace locusBody
+} // namespace bBody
