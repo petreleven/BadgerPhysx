@@ -17,7 +17,7 @@ int main() {
   b.setMass(mass);
   b.setsOrientation(badger::Quaternion(1, 0, 0, 0));
   b.SetDimensions(height, width, depth);
-  badger::GravityForceGenerator g(badger::Vector3(0, 100, 0));
+  badger::GravityForceGenerator g(badger::Vector3(0,-4000, 0));
   badger::World physixWorld;
   physixWorld.registerBody(&b);
   physixWorld.registerBodyForce(&b, &g);
@@ -87,12 +87,11 @@ int main() {
       ClearBackground(Color{100, 100, 100});
       BeginMode3D(camera);
       DrawOrientedCube(b, width, height, depth, GREEN);
+      DrawGrid(100, 50.0f);
       EndMode3D();
 
       // Draw controls info
       DrawFPS(10, 10);
-
-      DrawGrid(100, 50.0f);
       DrawText("Left Mouse Button: Rotate Camera", 10, 30, 20, DARKGRAY);
       DrawText("Mouse Wheel: Zoom", 10, 50, 20, DARKGRAY);
       EndDrawing();
