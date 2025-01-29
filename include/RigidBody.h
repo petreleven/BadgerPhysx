@@ -12,15 +12,15 @@ using badger::Vector3;
 
 class RigidBody {
 protected:
-  Vector3 forceAccum;
-  Vector3 torqueAccum;
+  Vector3 forceAccum = Vector3(0, 0, 0);
+  Vector3 torqueAccum = Vector3(0, 0, 0);
   real inverseMass = 1;
   real linearDamping = 0.99;
   real angularDamping = 0.90;
   Vector3 position;
-  Vector3 linearVelocity;
-  Vector3 angularVelocity;
-  Quaternion orientation;
+  Vector3 linearVelocity = Vector3(0, 0, 0);
+  Vector3 angularVelocity = Vector3(0, 0, 0);
+  Quaternion orientation = Quaternion(0, 0, 0, 0);
   Matrix4 transformationMatrix;
   Matrix3 inverseInertiaTensorLocal;
   Matrix3 inverseInertiaTensorWorld;
@@ -76,23 +76,31 @@ public:
    */
   void SetDimensions(badger::real height, badger::real width,
                      badger::real depth) {
-    height = std::max(height, 0.001f);
-    width = std::max(width, 0.001f);
-    depth = std::max(depth, 0.001f);
-    real mass = 1 / inverseMass;
-    mass = std::max(mass, 0.001f);
-    real ix = (1.0f / 12.0f) * mass * (height * height + depth * depth);
-    real iy = (1.0f / 12.0f) * mass * (width * width + depth * depth);
-    real iz = (1.0f / 12.0f) * mass * (width * width + height * height);
-    // Ensure minimum inertia values
-    ix = std::max(ix, 0.0001f);
-    iy = std::max(iy, 0.0001f);
-    iz = std::max(iz, 0.0001f);
-    badger::Matrix3 iT;
-    iT.data[0] = ix;
-    iT.data[4] = iy;
-    iT.data[8] = iz;
-    setInverseInertiaTensorLocal(iT);
+
+    // Create a fixed, non-singular, positive definite local inertia tensor.
+    // This matrix should be diagonal to simplify the concept, representing
+    // the inverse moments of inertia in local space (body space).
+
+    float fixedInertiaValue =
+        inverseMass; // You can set this to a reasonable value
+                     // based on the body size and mass.
+    const float MIN_INERTIA_VALUE = 1e-5f; // Minimum threshold for stability
+
+    // Ensure that the diagonal values are not too small to avoid instability.
+    inverseInertiaTensorLocal.data[0] =
+        std::max(fixedInertiaValue, MIN_INERTIA_VALUE); // Ixx
+    inverseInertiaTensorLocal.data[1] = 0.0f;           // Ixy
+    inverseInertiaTensorLocal.data[2] = 0.0f;           // Ixz
+
+    inverseInertiaTensorLocal.data[3] = 0.0f; // Ixy
+    inverseInertiaTensorLocal.data[4] =
+        std::max(fixedInertiaValue, MIN_INERTIA_VALUE); // Iyy
+    inverseInertiaTensorLocal.data[5] = 0.0f;           // Iyz
+
+    inverseInertiaTensorLocal.data[6] = 0.0f; // Ixz
+    inverseInertiaTensorLocal.data[7] = 0.0f; // Iyz
+    inverseInertiaTensorLocal.data[8] =
+        std::max(fixedInertiaValue, MIN_INERTIA_VALUE); // Izz
   }
   // removes force and torque accumulated over a frame
   void clearAccumulators();

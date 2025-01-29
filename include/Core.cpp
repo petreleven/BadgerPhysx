@@ -1,5 +1,5 @@
 #include "Core.h"
-#include <raylib.h>
+
 
 namespace badger {
 
@@ -42,7 +42,7 @@ void Matrix3::scale(real scalar) {
 }
 
 Vector3 Matrix3::transform(const Vector3 &p) const { return (*this) * p; }
-
+/*
 void Matrix3::setInverse(const Matrix3 &m) {
   real t1 = m.data[0] * m.data[4] * m.data[8];
   real t2 = m.data[3] * m.data[7] * m.data[2];
@@ -51,7 +51,7 @@ void Matrix3::setInverse(const Matrix3 &m) {
   real t5 = m.data[6] * m.data[4] * m.data[2];
   real t6 = m.data[3] * m.data[1] * m.data[8];
   real determinant = t1 + t2 + t3 - t4 - t5 - t6;
-  if (determinant == 0.0f) {
+  if (std::abs(determinant) <= 1e-6) {
     return;
   }
 
@@ -65,7 +65,46 @@ void Matrix3::setInverse(const Matrix3 &m) {
   data[7] = -((m.data[0] * m.data[7]) - (m.data[1] * m.data[6]));
   data[8] = (m.data[0] * m.data[4]) - (m.data[1] * m.data[3]);
   this->scale(1 / determinant);
+}*/
+void Matrix3::setInverse(const Matrix3 &m) {
+  real t1 = m.data[0] * m.data[4] * m.data[8];
+  real t2 = m.data[3] * m.data[7] * m.data[2];
+  real t3 = m.data[6] * m.data[1] * m.data[5];
+  real t4 = m.data[0] * m.data[7] * m.data[5];
+  real t5 = m.data[6] * m.data[4] * m.data[2];
+  real t6 = m.data[3] * m.data[1] * m.data[8];
+  real determinant = t1 + t2 + t3 - t4 - t5 - t6;
+  
+  // Define a small epsilon to avoid division by a very small determinant
+  const real epsilon = 1e-6;
+
+  // Check if determinant is too small and handle it accordingly
+  if (std::abs(determinant) < epsilon) {
+    // You can either set the matrix to a default value (such as an identity matrix)
+    // or handle the case as an invalid matrix
+    // For example, set all elements to zero or log an error
+    std::fill(data, data + 9, 0.0f); // Zero out the matrix to indicate invalid state
+    data[0] = 1;
+    data[4] = 1;
+    data[8] =1;
+    return;
+  }
+
+  // Proceed with normal cofactor matrix calculation
+  data[0] = (m.data[4] * m.data[8]) - (m.data[5] * m.data[7]);
+  data[1] = -((m.data[1] * m.data[8]) - (m.data[2] * m.data[7]));
+  data[2] = (m.data[1] * m.data[5]) - (m.data[2] * m.data[4]);
+  data[3] = -((m.data[3] * m.data[8]) - (m.data[5] * m.data[6]));
+  data[4] = ((m.data[0] * m.data[8]) - (m.data[2] * m.data[6]));
+  data[5] = -((m.data[0] * m.data[5]) - (m.data[2] * m.data[3]));
+  data[6] = (m.data[3] * m.data[7]) - (m.data[4] * m.data[6]);
+  data[7] = -((m.data[0] * m.data[7]) - (m.data[1] * m.data[6]));
+  data[8] = (m.data[0] * m.data[4]) - (m.data[1] * m.data[3]);
+  
+  // Now scale by the determinant (use the adjusted determinant if it was too small)
+  this->scale(1.0f / (determinant + epsilon)); // Add epsilon to prevent divide-by-zero issues
 }
+
 Matrix3 Matrix3::inverse() const {
   Matrix3 newM;
   newM.setInverse(*this);

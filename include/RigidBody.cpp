@@ -1,5 +1,4 @@
 #include "RigidBody.h"
-#include <iostream>
 
 namespace bBody {
 using badger::real;
@@ -8,53 +7,21 @@ using badger::Vector3;
 void RigidBody::integrate(real duration) {
   // linear_acceleration=f * invMass
   Vector3 linearAcc = forceAccum * inverseMass;
-  if (std::isfinite(linearAcc.x) && std::isfinite(linearAcc.y) &&
-      std::isfinite(linearAcc.z)) {
-    // v = v + at
-    linearVelocity = linearVelocity * linearDamping + linearAcc * duration;
-    // p = p + vt
-    position += linearVelocity * duration;
-  }
-  // Validate inertia tensor before use
-  bool validInertia = true;
-  for (int i = 0; i < 9; i++) {
-    if (!std::isfinite(inverseInertiaTensorWorld.data[i])) {
-      validInertia = false;
-      break;
-    }
-  }
-  if (validInertia) {
-    // angular_acc = InvInertia . Torque;
-    Vector3 angularAcc = inverseInertiaTensorWorld * torqueAccum;
-    // Check angular acceleration validity
-    if (std::isfinite(angularAcc.x) && std::isfinite(angularAcc.y) &&
-        std::isfinite(angularAcc.z)) {
-      angularVelocity =
-          angularVelocity * angularDamping + angularAcc * duration;
-          std::cout<<"INV INERTia in integrate ";
-      for (int i = 0; i < 10; i++) {
-        std::cout << inverseInertiaTensorWorld.data[i] << " ";
-      }
-      std::cout << "\nTorque accum: x" << torqueAccum.x
-                << " y:" << torqueAccum.y << " z:" << torqueAccum.z << "\n";
-      std::cout << "\n";
-      std::cout << "angAcc x:" << angularAcc.x << " y:" << angularAcc.y
-                << " z:" << angularAcc.z << "\n";
-      std::cout << "angV x:" << angularVelocity.x << " y:" << angularVelocity.y
-                << " z:" << angularVelocity.z << "\n";
-      clampAngularVelocity();
-      std::cout << "After angV x:" << angularVelocity.x
-                << " y:" << angularVelocity.y << " z:" << angularVelocity.z
-                << "\n";
 
-      // Validate angular velocity before updating orientation
-      if (std::isfinite(angularVelocity.x) &&
-          std::isfinite(angularVelocity.y) &&
-          std::isfinite(angularVelocity.z)) {
-        orientation.addScaledVector(angularVelocity, duration);
-      }
-    }
-  }
+  // v = v + at
+  linearVelocity = linearVelocity * linearDamping + linearAcc * duration;
+  // p = p + vt
+  position += linearVelocity * duration;
+
+  // angular_acc = InvInertia . Torque;
+  Vector3 angularAcc = inverseInertiaTensorWorld * torqueAccum;
+
+  angularVelocity = angularVelocity * angularDamping + angularAcc * duration;
+
+  clampAngularVelocity();
+
+  orientation.addScaledVector(angularVelocity, duration);
+
   clearAccumulators();
   calculateDerivedData();
 }
@@ -99,9 +66,8 @@ static inline void _calculateTransformMatrix(Matrix4 &transformMatrix,
       1 - 2 * orientation.i * orientation.i - 2 * orientation.j * orientation.j;
   transformMatrix.data[11] = position.z;
 }
-
+//Does R T R*
 static inline void _transformInertiaTensor(Matrix3 &iitWorld,
-                                           const Quaternion &q,
                                            const Matrix3 &iitBody,
                                            const Matrix4 &rotmat) {
   real t4 = rotmat.data[0] * iitBody.data[0] +
@@ -157,13 +123,8 @@ void RigidBody::calculateDerivedData() {
   _calculateTransformMatrix(transformationMatrix, position, orientation);
 
   // Calculate the inertiaTensor in world space.
-  _transformInertiaTensor(inverseInertiaTensorWorld, orientation,
+  _transformInertiaTensor(inverseInertiaTensorWorld,
                           inverseInertiaTensorLocal, transformationMatrix);
-  std::cout<<"INV INERTia in calculateDerivedData ";
-  for (int i = 0; i < 10; i++) {
-    std::cout << inverseInertiaTensorWorld.data[i] << " ";
-  }
-  std::cout<<"\n";
 }
 
 void RigidBody::addForce(const Vector3 &force) { forceAccum += force; }

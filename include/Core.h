@@ -26,17 +26,15 @@ public:
     y += v.y;
     z += v.z;
   }
-  Vector3 operator+(const Vector3 &v)  const{
-    return Vector3(x + v.x,
-    y + v.y,
-    z + v.z);
+  Vector3 operator+(const Vector3 &v) const {
+    return Vector3(x + v.x, y + v.y, z + v.z);
   }
- 
-  Vector3 operator+=(badger::real &sc) {
+
+  Vector3 &operator+=(const badger::real &sc) {
     x += sc;
     y += sc;
     z += sc;
-    return Vector3(x, y, z);
+    return *this;
   }
 
   Vector3 &operator-=(const Vector3 &v) {
@@ -47,12 +45,8 @@ public:
   }
 
   Vector3 operator-(const Vector3 &v) const {
-    return Vector3(
-    x - v.x,
-    y - v.y,
-    z - v.z);
+    return Vector3(x - v.x, y - v.y, z - v.z);
   }
- 
 
   Vector3 &operator=(const Vector3 &v) {
     x = v.x;
@@ -67,7 +61,7 @@ public:
     z *= scalar;
     return *this;
   }
-  Vector3 operator*(const real &scalar) const{
+  Vector3 operator*(const real &scalar) const {
     return Vector3(x * scalar, y * scalar, z * scalar);
   }
 };
@@ -88,8 +82,8 @@ public:
    **/
   Quaternion(real r, real i, real j, real k) : r(r), i(i), j(j), k(k) {}
   /*
-  *Normalizes the quaternion in place
-  */
+   *Normalizes the quaternion in place
+   */
   void normalize() {
     real mag = sqrtf(r * r + i * i + j * j + k * k);
     if (mag <= 1e-6) {
@@ -98,8 +92,7 @@ public:
     }
     real Invmag = 1 / mag;
     r = r * Invmag;
-    i = i *
-     Invmag;
+    i = i * Invmag;
     j = j * Invmag;
     k = k * Invmag;
   }

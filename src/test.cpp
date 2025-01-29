@@ -16,9 +16,9 @@ int main() {
   b.setPosition(badger::Vector3(200, 200, 0)); // Increased y value to 280
   b.setMass(mass);
   b.setsOrientation(badger::Quaternion(1, 0, 0, 0));
-  b.SetDimensions(height/100, width/100, depth/100);
+  b.SetDimensions(height, width, depth);
   badger::GravityForceGenerator g(badger::Vector3(0, -4000, 0));
-  badger::real scale =2;
+  badger::real scale =20;
   badger::RotationalForceGeneraor rfg(scale, badger::Vector3(50, 0, 0),
                                       badger::Vector3(.2, .2, .2));
   badger::World physixWorld;
@@ -82,7 +82,7 @@ int main() {
     // physics
     {
       physixWorld.startFrame();
-      physixWorld.update(.006);
+      physixWorld.update(.016);
     }
     // rendering
     {
