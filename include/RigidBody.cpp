@@ -1,7 +1,5 @@
 #include "RigidBody.h"
-#include "LocusMathFunctions.h"
-
-
+#include <iostream>
 
 namespace bBody {
 using badger::real;
@@ -10,14 +8,53 @@ using badger::Vector3;
 void RigidBody::integrate(real duration) {
   // linear_acceleration=f * invMass
   Vector3 linearAcc = forceAccum * inverseMass;
-  // v = v + at
-  linearVelocity = linearVelocity * linearDamping + linearAcc * duration;
-  // p = p + vt
-  position += linearVelocity * duration;
-  // angular_acc = InvInertia . Torque;
-  Vector3 angularAcc = inverseInertiaTensorWorld * torqueAccum;
-  angularVelocity = angularVelocity * angularDamping + angularAcc * duration;
-  orientation.addScaledVector(angularVelocity, duration);
+  if (std::isfinite(linearAcc.x) && std::isfinite(linearAcc.y) &&
+      std::isfinite(linearAcc.z)) {
+    // v = v + at
+    linearVelocity = linearVelocity * linearDamping + linearAcc * duration;
+    // p = p + vt
+    position += linearVelocity * duration;
+  }
+  // Validate inertia tensor before use
+  bool validInertia = true;
+  for (int i = 0; i < 9; i++) {
+    if (!std::isfinite(inverseInertiaTensorWorld.data[i])) {
+      validInertia = false;
+      break;
+    }
+  }
+  if (validInertia) {
+    // angular_acc = InvInertia . Torque;
+    Vector3 angularAcc = inverseInertiaTensorWorld * torqueAccum;
+    // Check angular acceleration validity
+    if (std::isfinite(angularAcc.x) && std::isfinite(angularAcc.y) &&
+        std::isfinite(angularAcc.z)) {
+      angularVelocity =
+          angularVelocity * angularDamping + angularAcc * duration;
+          std::cout<<"INV INERTia in integrate ";
+      for (int i = 0; i < 10; i++) {
+        std::cout << inverseInertiaTensorWorld.data[i] << " ";
+      }
+      std::cout << "\nTorque accum: x" << torqueAccum.x
+                << " y:" << torqueAccum.y << " z:" << torqueAccum.z << "\n";
+      std::cout << "\n";
+      std::cout << "angAcc x:" << angularAcc.x << " y:" << angularAcc.y
+                << " z:" << angularAcc.z << "\n";
+      std::cout << "angV x:" << angularVelocity.x << " y:" << angularVelocity.y
+                << " z:" << angularVelocity.z << "\n";
+      clampAngularVelocity();
+      std::cout << "After angV x:" << angularVelocity.x
+                << " y:" << angularVelocity.y << " z:" << angularVelocity.z
+                << "\n";
+
+      // Validate angular velocity before updating orientation
+      if (std::isfinite(angularVelocity.x) &&
+          std::isfinite(angularVelocity.y) &&
+          std::isfinite(angularVelocity.z)) {
+        orientation.addScaledVector(angularVelocity, duration);
+      }
+    }
+  }
   clearAccumulators();
   calculateDerivedData();
 }
@@ -30,101 +67,103 @@ void RigidBody::clearAccumulators() {
   torqueAccum.y = 0;
   torqueAccum.z = 0;
 }
-void RigidBody::calculateDerivedData() {
-  orientation.normalize();
-  transformationMatrix.setOrientation(orientation, position);
-  _calculateInverseInetiaTensorWorld(inverseInertiaTensorWorld,
-                                     transformationMatrix,
-                                     inverseInertiaTensorLocal);
-}
 
 void RigidBody::setInverseInertiaTensorLocal(const Matrix3 &inertiaTensor) {
   inverseInertiaTensorLocal.setInverse(inertiaTensor);
 }
 
-inline void RigidBody::_calculateInverseInetiaTensorWorld(
-    Matrix3 &inverseInertiaTensorWorld, const Matrix4 &transformationMatrix,
-    const Matrix3 &inverseInertiaTensorLocal) {
+static inline void _calculateTransformMatrix(Matrix4 &transformMatrix,
+                                             const Vector3 &position,
+                                             const Quaternion &orientation) {
+  transformMatrix.data[0] =
+      1 - 2 * orientation.j * orientation.j - 2 * orientation.k * orientation.k;
+  transformMatrix.data[1] =
+      2 * orientation.i * orientation.j - 2 * orientation.r * orientation.k;
+  transformMatrix.data[2] =
+      2 * orientation.i * orientation.k + 2 * orientation.r * orientation.j;
+  transformMatrix.data[3] = position.x;
 
-  inverseInertiaTensorWorld.data[0] =
-      transformationMatrix.data[0] * inverseInertiaTensorLocal.data[0] +
-      transformationMatrix.data[1] * inverseInertiaTensorLocal.data[3] +
-      transformationMatrix.data[2] * inverseInertiaTensorLocal.data[6];
-  inverseInertiaTensorWorld.data[1] =
-      transformationMatrix.data[0] * inverseInertiaTensorLocal.data[1] +
-      transformationMatrix.data[1] * inverseInertiaTensorLocal.data[4] +
-      transformationMatrix.data[2] * inverseInertiaTensorLocal.data[7];
-  inverseInertiaTensorWorld.data[2] =
-      transformationMatrix.data[0] * inverseInertiaTensorLocal.data[2] +
-      transformationMatrix.data[1] * inverseInertiaTensorLocal.data[5] +
-      transformationMatrix.data[2] * inverseInertiaTensorLocal.data[8];
+  transformMatrix.data[4] =
+      2 * orientation.i * orientation.j + 2 * orientation.r * orientation.k;
+  transformMatrix.data[5] =
+      1 - 2 * orientation.i * orientation.i - 2 * orientation.k * orientation.k;
+  transformMatrix.data[6] =
+      2 * orientation.j * orientation.k - 2 * orientation.r * orientation.i;
+  transformMatrix.data[7] = position.y;
 
-  inverseInertiaTensorWorld.data[3] =
-      transformationMatrix.data[4] * inverseInertiaTensorLocal.data[0] +
-      transformationMatrix.data[5] * inverseInertiaTensorLocal.data[3] +
-      transformationMatrix.data[6] * inverseInertiaTensorLocal.data[6];
-  inverseInertiaTensorWorld.data[4] =
-      transformationMatrix.data[4] * inverseInertiaTensorLocal.data[1] +
-      transformationMatrix.data[5] * inverseInertiaTensorLocal.data[4] +
-      transformationMatrix.data[6] * inverseInertiaTensorLocal.data[7];
-  inverseInertiaTensorWorld.data[5] =
-      transformationMatrix.data[4] * inverseInertiaTensorLocal.data[2] +
-      transformationMatrix.data[5] * inverseInertiaTensorLocal.data[5] +
-      transformationMatrix.data[6] * inverseInertiaTensorLocal.data[8];
+  transformMatrix.data[8] =
+      2 * orientation.i * orientation.k - 2 * orientation.r * orientation.j;
+  transformMatrix.data[9] =
+      2 * orientation.j * orientation.k + 2 * orientation.r * orientation.i;
+  transformMatrix.data[10] =
+      1 - 2 * orientation.i * orientation.i - 2 * orientation.j * orientation.j;
+  transformMatrix.data[11] = position.z;
+}
 
-  inverseInertiaTensorWorld.data[6] =
-      transformationMatrix.data[8] * inverseInertiaTensorLocal.data[0] +
-      transformationMatrix.data[9] * inverseInertiaTensorLocal.data[3] +
-      transformationMatrix.data[10] * inverseInertiaTensorLocal.data[6];
-  inverseInertiaTensorWorld.data[7] =
-      transformationMatrix.data[8] * inverseInertiaTensorLocal.data[1] +
-      transformationMatrix.data[9] * inverseInertiaTensorLocal.data[4] +
-      transformationMatrix.data[10] * inverseInertiaTensorLocal.data[7];
-  inverseInertiaTensorWorld.data[8] =
-      transformationMatrix.data[8] * inverseInertiaTensorLocal.data[2] +
-      transformationMatrix.data[9] * inverseInertiaTensorLocal.data[5] +
-      transformationMatrix.data[10] * inverseInertiaTensorLocal.data[8];
-  // by R*
-  real data[9];
-  data[0] = inverseInertiaTensorWorld.data[0] * transformationMatrix.data[0] +
-            inverseInertiaTensorWorld.data[1] * transformationMatrix.data[1] +
-            inverseInertiaTensorWorld.data[2] * transformationMatrix.data[2];
-  data[1] = inverseInertiaTensorWorld.data[0] * transformationMatrix.data[4] +
-            inverseInertiaTensorWorld.data[1] * transformationMatrix.data[5] +
-            inverseInertiaTensorWorld.data[2] * transformationMatrix.data[6];
-  data[2] = inverseInertiaTensorWorld.data[0] * transformationMatrix.data[8] +
-            inverseInertiaTensorWorld.data[1] * transformationMatrix.data[9] +
-            inverseInertiaTensorWorld.data[2] * transformationMatrix.data[10];
+static inline void _transformInertiaTensor(Matrix3 &iitWorld,
+                                           const Quaternion &q,
+                                           const Matrix3 &iitBody,
+                                           const Matrix4 &rotmat) {
+  real t4 = rotmat.data[0] * iitBody.data[0] +
+            rotmat.data[1] * iitBody.data[3] + rotmat.data[2] * iitBody.data[6];
+  real t9 = rotmat.data[0] * iitBody.data[1] +
+            rotmat.data[1] * iitBody.data[4] + rotmat.data[2] * iitBody.data[7];
+  real t14 = rotmat.data[0] * iitBody.data[2] +
+             rotmat.data[1] * iitBody.data[5] +
+             rotmat.data[2] * iitBody.data[8];
+  real t28 = rotmat.data[4] * iitBody.data[0] +
+             rotmat.data[5] * iitBody.data[3] +
+             rotmat.data[6] * iitBody.data[6];
+  real t33 = rotmat.data[4] * iitBody.data[1] +
+             rotmat.data[5] * iitBody.data[4] +
+             rotmat.data[6] * iitBody.data[7];
+  real t38 = rotmat.data[4] * iitBody.data[2] +
+             rotmat.data[5] * iitBody.data[5] +
+             rotmat.data[6] * iitBody.data[8];
+  real t52 = rotmat.data[8] * iitBody.data[0] +
+             rotmat.data[9] * iitBody.data[3] +
+             rotmat.data[10] * iitBody.data[6];
+  real t57 = rotmat.data[8] * iitBody.data[1] +
+             rotmat.data[9] * iitBody.data[4] +
+             rotmat.data[10] * iitBody.data[7];
+  real t62 = rotmat.data[8] * iitBody.data[2] +
+             rotmat.data[9] * iitBody.data[5] +
+             rotmat.data[10] * iitBody.data[8];
 
-  data[3] = inverseInertiaTensorWorld.data[3] * transformationMatrix.data[0] +
-            inverseInertiaTensorWorld.data[4] * transformationMatrix.data[1] +
-            inverseInertiaTensorWorld.data[5] * transformationMatrix.data[2];
-  data[4] = inverseInertiaTensorWorld.data[3] * transformationMatrix.data[4] +
-            inverseInertiaTensorWorld.data[4] * transformationMatrix.data[5] +
-            inverseInertiaTensorWorld.data[5] * transformationMatrix.data[6];
-  data[5] = inverseInertiaTensorWorld.data[3] * transformationMatrix.data[8] +
-            inverseInertiaTensorWorld.data[4] * transformationMatrix.data[9] +
-            inverseInertiaTensorWorld.data[5] * transformationMatrix.data[10];
+  iitWorld.data[0] =
+      t4 * rotmat.data[0] + t9 * rotmat.data[1] + t14 * rotmat.data[2];
+  iitWorld.data[1] =
+      t4 * rotmat.data[4] + t9 * rotmat.data[5] + t14 * rotmat.data[6];
+  iitWorld.data[2] =
+      t4 * rotmat.data[8] + t9 * rotmat.data[9] + t14 * rotmat.data[10];
+  iitWorld.data[3] =
+      t28 * rotmat.data[0] + t33 * rotmat.data[1] + t38 * rotmat.data[2];
+  iitWorld.data[4] =
+      t28 * rotmat.data[4] + t33 * rotmat.data[5] + t38 * rotmat.data[6];
+  iitWorld.data[5] =
+      t28 * rotmat.data[8] + t33 * rotmat.data[9] + t38 * rotmat.data[10];
+  iitWorld.data[6] =
+      t52 * rotmat.data[0] + t57 * rotmat.data[1] + t62 * rotmat.data[2];
+  iitWorld.data[7] =
+      t52 * rotmat.data[4] + t57 * rotmat.data[5] + t62 * rotmat.data[6];
+  iitWorld.data[8] =
+      t52 * rotmat.data[8] + t57 * rotmat.data[9] + t62 * rotmat.data[10];
+}
 
-  data[6] = inverseInertiaTensorWorld.data[6] * transformationMatrix.data[0] +
-            inverseInertiaTensorWorld.data[7] * transformationMatrix.data[1] +
-            inverseInertiaTensorWorld.data[8] * transformationMatrix.data[2];
-  data[7] = inverseInertiaTensorWorld.data[6] * transformationMatrix.data[4] +
-            inverseInertiaTensorWorld.data[7] * transformationMatrix.data[5] +
-            inverseInertiaTensorWorld.data[8] * transformationMatrix.data[6];
-  data[8] = inverseInertiaTensorWorld.data[6] * transformationMatrix.data[8] +
-            inverseInertiaTensorWorld.data[7] * transformationMatrix.data[9] +
-            inverseInertiaTensorWorld.data[8] * transformationMatrix.data[10];
+void RigidBody::calculateDerivedData() {
+  orientation.normalize();
 
-  inverseInertiaTensorWorld.data[0] = data[0];
-  inverseInertiaTensorWorld.data[1] = data[1];
-  inverseInertiaTensorWorld.data[2] = data[2];
-  inverseInertiaTensorWorld.data[3] = data[3];
-  inverseInertiaTensorWorld.data[4] = data[4];
-  inverseInertiaTensorWorld.data[5] = data[5];
-  inverseInertiaTensorWorld.data[6] = data[6];
-  inverseInertiaTensorWorld.data[7] = data[7];
-  inverseInertiaTensorWorld.data[8] = data[8];
+  // Calculate the transform matrix for the body.
+  _calculateTransformMatrix(transformationMatrix, position, orientation);
+
+  // Calculate the inertiaTensor in world space.
+  _transformInertiaTensor(inverseInertiaTensorWorld, orientation,
+                          inverseInertiaTensorLocal, transformationMatrix);
+  std::cout<<"INV INERTia in calculateDerivedData ";
+  for (int i = 0; i < 10; i++) {
+    std::cout << inverseInertiaTensorWorld.data[i] << " ";
+  }
+  std::cout<<"\n";
 }
 
 void RigidBody::addForce(const Vector3 &force) { forceAccum += force; }

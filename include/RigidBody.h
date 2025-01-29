@@ -1,6 +1,7 @@
 #pragma once
 #include "Core.h"
 #include "LocusMathFunctions.h"
+#include <algorithm>
 
 namespace bBody {
 using badger::Matrix3;
@@ -14,8 +15,8 @@ protected:
   Vector3 forceAccum;
   Vector3 torqueAccum;
   real inverseMass = 1;
-  real linearDamping = 0.9;
-  real angularDamping = 0.9;
+  real linearDamping = 0.99;
+  real angularDamping = 0.90;
   Vector3 position;
   Vector3 linearVelocity;
   Vector3 angularVelocity;
@@ -23,13 +24,20 @@ protected:
   Matrix4 transformationMatrix;
   Matrix3 inverseInertiaTensorLocal;
   Matrix3 inverseInertiaTensorWorld;
-
+  real maxAngularSpeed = 4 * 3.14159265358979323846;
   // rotMatrix . inverseInerialLocal * rotMxtrixInv;
   // think of it like qvq* from quaternion
   static inline void
   _calculateInverseInetiaTensorWorld(Matrix3 &inverseInertiaTensorWorld,
                                      const Matrix4 &transformationMatrix,
                                      const Matrix3 &inverseInertiaTensorLocal);
+  // Add method to clamp angular velocity
+  void clampAngularVelocity() {
+    real currentSpeed = bMath::BMathFunctions::Magnitude(angularVelocity);
+    if (currentSpeed > maxAngularSpeed) {
+      angularVelocity *= (maxAngularSpeed / currentSpeed);
+    }
+  }
 
 public:
   /**
@@ -68,12 +76,18 @@ public:
    */
   void SetDimensions(badger::real height, badger::real width,
                      badger::real depth) {
-    real ix =
-        (1.0f / 12.0f) * 1 / inverseMass * (height * height + depth * depth);
-    real iy =
-        (1.0f / 12.0f) * 1 / inverseMass * (width * width + depth * depth);
-    real iz =
-        (1.0f / 12.0f) * 1 / inverseMass * (width * width + height * height);
+    height = std::max(height, 0.001f);
+    width = std::max(width, 0.001f);
+    depth = std::max(depth, 0.001f);
+    real mass = 1 / inverseMass;
+    mass = std::max(mass, 0.001f);
+    real ix = (1.0f / 12.0f) * mass * (height * height + depth * depth);
+    real iy = (1.0f / 12.0f) * mass * (width * width + depth * depth);
+    real iz = (1.0f / 12.0f) * mass * (width * width + height * height);
+    // Ensure minimum inertia values
+    ix = std::max(ix, 0.0001f);
+    iy = std::max(iy, 0.0001f);
+    iz = std::max(iz, 0.0001f);
     badger::Matrix3 iT;
     iT.data[0] = ix;
     iT.data[4] = iy;
@@ -138,6 +152,11 @@ public:
    *@return badger badger::Vector3
    */
   Vector3 getPosition() const { return position; }
+  /*
+   *Get the angular Velocity
+   *@return badger badger::Vector3
+   */
+  Vector3 getAngularVel() const { return angularVelocity; }
 };
 
 } // namespace bBody

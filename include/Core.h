@@ -1,10 +1,8 @@
 #pragma once
-
 #include <algorithm>
-#include <bits/types/struct_tm.h>
 #include <cstddef>
 #include <math.h>
-#include <raylib.h>
+
 namespace badger {
 typedef float real;
 
@@ -69,7 +67,7 @@ public:
     z *= scalar;
     return *this;
   }
-  Vector3 operator*(const real &scalar) {
+  Vector3 operator*(const real &scalar) const{
     return Vector3(x * scalar, y * scalar, z * scalar);
   }
 };
@@ -94,13 +92,14 @@ public:
   */
   void normalize() {
     real mag = sqrtf(r * r + i * i + j * j + k * k);
-    if (mag < 1e-6) {
+    if (mag <= 1e-6) {
       r = 1;
       return;
     }
     real Invmag = 1 / mag;
     r = r * Invmag;
-    i = i * Invmag;
+    i = i *
+     Invmag;
     j = j * Invmag;
     k = k * Invmag;
   }

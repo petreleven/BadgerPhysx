@@ -10,7 +10,7 @@ using bBody::RigidBody;
 class ForceGenerator {
 
 public:
-  virtual void applyForce(RigidBody *rigidBody, real dt) const = 0;
+  virtual void applyForce(RigidBody *rigidBody, const real &dt) const = 0;
 };
 
 class GravityForceGenerator : public ForceGenerator {
@@ -18,7 +18,7 @@ class GravityForceGenerator : public ForceGenerator {
 
 public:
   GravityForceGenerator(const badger::Vector3 &g) : gravity(g){};
-  virtual void applyForce(RigidBody *rigidBody, real dt) const;
+  virtual void applyForce(RigidBody *rigidBody, const real &dt) const override;
 };
 
 class SpringForceGenerator : public ForceGenerator {
@@ -47,6 +47,18 @@ public:
   @param - bBody::RigidBody *  - RigidBody hanging from spring
   @param - badger::Real - timestep
   */
-  virtual void applyForce(RigidBody *body, const real &dt) const;
+  virtual void applyForce(RigidBody *body, const real &dt) const override;
+};
+
+class RotationalForceGeneraor : public ForceGenerator {
+private:
+  Vector3 relativePos;
+  Vector3 direction;
+  real scale;
+
+public:
+  RotationalForceGeneraor(real scale, badger::Vector3 relativePos,
+                          badger::Vector3 direction);
+  virtual void applyForce(RigidBody *rigidbody, const real &dt) const override;
 };
 } // namespace badger

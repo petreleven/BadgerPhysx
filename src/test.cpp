@@ -11,16 +11,19 @@ int main() {
   badger::RigidBody b;
   badger::real mass = 10;
   badger::real height = 100;
-  badger::real width = 100;
+  badger::real width = 200;
   badger::real depth = 100;
   b.setPosition(badger::Vector3(200, 200, 0)); // Increased y value to 280
   b.setMass(mass);
   b.setsOrientation(badger::Quaternion(1, 0, 0, 0));
-  b.SetDimensions(height, width, depth);
-  badger::GravityForceGenerator g(badger::Vector3(0,-4000, 0));
+  b.SetDimensions(height/100, width/100, depth/100);
+  badger::GravityForceGenerator g(badger::Vector3(0, -4000, 0));
+  badger::real scale =2;
+  badger::RotationalForceGeneraor rfg(scale, badger::Vector3(50, 0, 0),
+                                      badger::Vector3(.2, .2, .2));
   badger::World physixWorld;
   physixWorld.registerBody(&b);
-  physixWorld.registerBodyForce(&b, &g);
+  physixWorld.registerBodyForce(&b, &rfg);
 
   const int screenWidth = 800;
   const int screenHeight = 450;
@@ -79,7 +82,7 @@ int main() {
     // physics
     {
       physixWorld.startFrame();
-      physixWorld.update(.016);
+      physixWorld.update(.006);
     }
     // rendering
     {
@@ -91,10 +94,11 @@ int main() {
       EndMode3D();
 
       // Draw controls info
-      DrawFPS(10, 10);
-      DrawText("Left Mouse Button: Rotate Camera", 10, 30, 20, DARKGRAY);
-      DrawText("Mouse Wheel: Zoom", 10, 50, 20, DARKGRAY);
+      //DrawFPS(10, 10);
+      //DrawText("Left Mouse Button: Rotate Camera", 10, 30, 20, DARKGRAY);
+      //DrawText("Mouse Wheel: Zoom", 10, 50, 20, DARKGRAY);
       EndDrawing();
+
     }
   }
 

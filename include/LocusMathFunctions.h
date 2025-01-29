@@ -28,12 +28,17 @@ public:
   }
   static badger::Vector3 Normalize(const badger::Vector3 &v) {
     badger::real mag = Magnitude(v);
-    badger::Vector3 normalized = badger::Vector3(v.x / mag, v.y / mag, v.z / mag);
+    if (mag <= 1e-6) {
+      return badger::Vector3(0, 0, 0);
+    }
+
+    badger::Vector3 normalized =
+        badger::Vector3(v.x / mag, v.y / mag, v.z / mag);
     return normalized;
   }
 
   static badger::Vector3 CrossProduct(const badger::Vector3 &a,
-                                     const badger::Vector3 &b) {
+                                      const badger::Vector3 &b) {
     badger::real x = a.y * b.z - a.z * b.y;
     badger::real y = a.z * b.x - a.x * b.z;
     badger::real z = a.x * b.y - a.y * b.x;
@@ -42,7 +47,7 @@ public:
   }
 
   static badger::Point CrossProduct(const badger::Point &a,
-                                   const badger::Point &b) {
+                                    const badger::Point &b) {
     badger::real x = a.y * b.z - a.z * b.y;
     badger::real y = a.z * b.x - a.x * b.z;
     badger::real z = a.x * b.y - a.y * b.x;
@@ -51,11 +56,12 @@ public:
   }
 
   static badger::real CrossProduct2D(badger::real x1, badger::real y1,
-                                    badger::real x2, badger::real y2) {
+                                     badger::real x2, badger::real y2) {
     return (x1 * y2) - (x2 * y1);
   }
 
-  static badger::real DotProduct(const badger::Point &a, const badger::Point &b) {
+  static badger::real DotProduct(const badger::Point &a,
+                                 const badger::Point &b) {
     badger::real x = a.x * b.x;
     badger::real y = a.y * b.y;
     badger::real z = a.z * b.z;
@@ -64,6 +70,9 @@ public:
 
   static badger::Point Normalize(const badger::Point &a) {
     badger::real magnitude = Magnitude(a);
+    if (magnitude <= 1e-6) {
+      return badger::Point{.x = 0, .y = 0, .z = 0};
+    }
     badger::real x = a.x / magnitude;
     badger::real y = a.y / magnitude;
     badger::real z = a.z / magnitude;
@@ -134,7 +143,8 @@ public:
     return {u, v, w};
   }
 
-  static bool TestPointInTriangle(const badger::Point &p, const badger::Point &a,
+  static bool TestPointInTriangle(const badger::Point &p,
+                                  const badger::Point &a,
                                   const badger::Point &b,
                                   const badger::Point &c) {
     auto [u, v, w] = BaryCentric(p, a, b, c);
@@ -142,8 +152,9 @@ public:
   }
 
   // Computes plane equation given three points forming a triangle in ccw
-  static badger::Plane ComputePlane(const badger::Point &a, const badger::Point &b,
-                                   const badger::Point &c) {
+  static badger::Plane ComputePlane(const badger::Point &a,
+                                    const badger::Point &b,
+                                    const badger::Point &c) {
     badger::Plane p;
     badger::Point _n = Normalize(CrossProduct(b - a, c - a));
     badger::Vector3 n(_n.x, _n.y, _n.z);
@@ -157,7 +168,7 @@ public:
                            const badger::Point &c, const badger::Point &d) {
     // dot(normal(ABC), normal(ACD) )
     badger::real dot = DotProduct(CrossProduct((d - b), (a - b)),
-                                 CrossProduct((d - b), (c - b)));
+                                  CrossProduct((d - b), (c - b)));
     if (dot >= 0.0f) {
       return false;
     }
@@ -235,4 +246,4 @@ public:
     return bestIndex;
   }
 };
-} // namespace badgerMath
+} // namespace bMath
