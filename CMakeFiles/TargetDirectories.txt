@@ -1,9 +1,0 @@
-/home/peter/Desktop/tests/badger/CMakeFiles/Main.dir
-/home/peter/Desktop/tests/badger/CMakeFiles/edit_cache.dir
-/home/peter/Desktop/tests/badger/CMakeFiles/rebuild_cache.dir
-/home/peter/Desktop/tests/badger/include/CMakeFiles/LocusMathFunctions.dir
-/home/peter/Desktop/tests/badger/include/CMakeFiles/Core.dir
-/home/peter/Desktop/tests/badger/include/CMakeFiles/ForceGenerator.dir
-/home/peter/Desktop/tests/badger/include/CMakeFiles/RigidBody.dir
-/home/peter/Desktop/tests/badger/include/CMakeFiles/edit_cache.dir
-/home/peter/Desktop/tests/badger/include/CMakeFiles/rebuild_cache.dir
